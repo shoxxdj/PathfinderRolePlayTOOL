@@ -1,0 +1,30 @@
+{
+  "name": "jdrtool",
+  "description": "Small tool to play JDR ",
+  "version": "1.0.0",
+  "maintainers": [
+    {
+      "name": "shoxx",
+      "email": "shoxx@hackdumb.com",
+      "web": ""
+    }
+  ],
+  "dependencies": {
+    "async": "^2.6.0",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "crypto": "^1.0.1",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "express-socket.io-session": "^1.3.2",
+    "http": "0.0.0",
+    "js-date": "^0.1.3",
+    "monk": "^6.0.5",
+    "node-random": "^1.0.1",
+    "redis": "^2.8.0",
+    "regex-email": "^1.0.2",
+    "sha256": "^0.2.0",
+    "socket.io": "^2.0.4"
+  }
+}

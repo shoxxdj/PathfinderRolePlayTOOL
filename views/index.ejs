@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+
+<div>
+  <button id="loginviasocket">Login</button>
+  <button id="logoutviasocket">Logout</button>
+</div>
+
+
+
+
+
+<script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+    socket = io();
+    socket.on("sessiondata", function(data) {
+      console.info("sessiondata event received. Check the console");
+      console.info("sessiondata is ", data);
+    })
+    socket.on("logged_in", function(data) {
+      console.info("logged_in event received. Check the console");
+      console.info("sessiondata after logged_in event is ", data);
+    }) 
+    socket.on("logged_out", function(data) {
+      console.info("logged_out event received. Check the console");
+      console.info("sessiondata after logged_out event is ", data);
+    })
+    socket.on('yeah',function(data){
+      console.log('YEAH');
+    });
+    socket.on('pouet',function(data){
+      console.log('pouet');
+    });
+    socket.on('master',function(data){
+      console.log(data.txt);
+    });
+
+    socket.on('everybody',function(data){
+      console.log(data);
+      console.log("l'utlisateur "+data.user+" a rejoins le site");
+    });
+
+    document.getElementById("loginviasocket").addEventListener("click", function(e) {
+      socket.emit("login");
+      e.preventDefault();
+    })
+    document.getElementById("logoutviasocket").addEventListener("click", function(e) {
+      socket.emit("logout");
+      e.preventDefault();
+    })    
+    </script>
+
+
+</body>
+</html>

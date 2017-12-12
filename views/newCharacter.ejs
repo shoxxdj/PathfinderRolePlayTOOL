@@ -1,0 +1,51 @@
+<% include static/head.ejs %>
+
+<h1>Nouveau personnage</h1>
+<div class="row">
+	<div class="col-md-3">
+		<select class="selections" name="race" id="race">
+			<option value="Humain">Humain</option>
+			<option value="Nain">Nain</option>
+			<option value="Elfe">Elfe</option>
+		</select>
+	</div>
+	<div class="col-md-9">
+		<p id="race-helper"></p>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-3">
+		<select class="selections"  name="class" id="class">
+			<option value="Guerrier">Guerrier</option>
+			<option value="Magicien">Mage</option>
+			<option value="Pretre">Prêtre</option>
+			<option value="Roublard">Roublard</option>
+		</select>
+	</div>
+	<div class="col-md-9">
+		<p id="class-helper"></p>
+	</div>
+</div>
+
+<script type="text/javascript">
+	
+	$(".selections").change(function(){
+		var value = $(this).attr('id');
+		$.get('/help/manual/'+value+'/'+$(this).val(),function(data){
+			if(!data.error){
+				$('#'+value+'-helper').text(data.text);
+			}
+		 	else{
+		 		alert('Something goes wrong');
+		 	}
+		});
+	});
+
+
+
+
+
+</script>
+
+
+<% include static/foot.ejs %>
