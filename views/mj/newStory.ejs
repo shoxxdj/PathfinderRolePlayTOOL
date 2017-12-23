@@ -1,0 +1,205 @@
+<% include ../static/head.ejs %>
+<%
+	infos = [{type:'infos',title:'Solidité et points de vie des objets',titles:['materiau','solidite','vie'],values:[
+		{materiau:'Verre',solidite:1,vie:"1/2,5 cm d'épaisseur"},
+		{materiau:'Papier ou tissu',solidite:0,vie:"2/2,5 cm d'épaisseur"},
+		{materiau:'Corde',solidite:0,vie:"2/2,5 cm d'épaisseur"},
+		{materiau:'Glace',solidite:0,vie:"3/2,5 cm d'épaisseur"},
+		{materiau:'Cuir ou peau',solidite:2,vie:"5/2,5 cm d'épaisseur"},
+		{materiau:'Bois',solidite:5,vie:"10/2,5 cm d'épaisseur"},
+		{materiau:'Pierre',solidite:8,vie:"15/2,5 cm d'épaisseur"},
+		{materiau:'Fer ou acier',solidite:10,vie:"30/2,5 cm d'épaisseur"}
+	]},
+	{type:'infos',title:"Classe d'armure des objets",titles:["taille","ca"],values:[
+		{taille:'Mouche',ca:'11'},
+		{taille:'Crapaud',ca:'7'},
+		{taille:'Poulet',ca:'5'},
+		{taille:'Gobelin',ca:'4'},
+		{taille:'Humain',ca:'3'},
+		{taille:'Ogre ou cheval',ca:'2'},
+		{taille:'Eléphant',ca:'1'},
+		{taille:'Maison',ca:'-1'}
+	]},
+	{type:'infos',title:"Murs",titles:["type","epaisseur","dd pour defoncer","solidite","vie","dd escalade"],values:[
+		{type:"Maçonerie",epaisseur:"30 cm",ddpourdefoncer:35,solidite:8,vie:90,ddescalade:20},
+		{type:"Pierre taillée",epaisseur:"90 cm",ddpourdefoncer:50,solidite:8,vie:540,ddescalade:25},
+		{type:"Pierre brute",epaisseur:"1,5 m",ddpourdefoncer:65,solidite:8,vie:900,ddescalade:15},
+		{type:"Papier",epaisseur:"Négligeable",ddpourdefoncer:1,solidite:0,vie:1,ddescalade:30},
+		{type:"Fer",epaisseur:"7,5 cm",ddpourdefoncer:30,solidite:10,vie:90,ddescalade:25},
+		{type:"Bois",epaisseur:"15 cm",ddpourdefoncer:20,solidite:5,vie:60,ddescalade:21}
+	]},
+	{type:'infos',title:"Portes",titles:["type","epaisseur","solidite","vie","coince","verouille"],values:[
+		{type:"Bois, normale",epaisseur:"2,5 cm",solidite:5,vie:10,coince:13,verouille:15},
+		{type:"Bois, solide",epaisseur:"4 cm",solidite:5,vie:15,coince:16,verouille:18},
+		{type:"Bois, epaisse",epaisseur:"5 cm",solidite:5,vie:20,coince:23,verouille:25},
+		{type:"Pierre",epaisseur:"10 cm",solidite:8,vie:60,coince:28,verouille:28},
+		{type:"Fer",epaisseur:"5 cm",solidite:10,vie:60,coince:28,verouille:28},
+		{type:"Herse, bois",epaisseur:"7,5cm",solidite:5,vie:30,coince:25,verouille:25},
+		{type:"Herse, fer",epaisseur:"5 cm",solidite:10,vie:60,coince:25,verouille:25},
+		{type:"Serrure",epaisseur:"",solidite:15,vie:30,coince:0,verouille:0},
+		{type:"Gond",epaisseur:"",solidite:15,vie:30,coince:0,verouille:0}
+	]}
+];
+%>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jets/0.14.0/jets.js"></script>
+<script type="text/javascript">
+	$.expr[":"].contains = $.expr.createPseudo(function(arg) {
+    return function( elem ) {
+        return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+    };
+});
+</script>
+
+<div class="row">
+	<div class="col-md-5">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Scénario</h3>
+			</div>
+			<div class="panel-body">
+				<textarea rows="10"></textarea>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-7">
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3>test</h3>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-7">
+							<input type="search" id="infosSearch">
+							<button onclick="superFiltre()">Filtre</button>
+						</div>
+						<div class="col-md-5">
+							<input type="search" id="bestiaireSearch">
+							<button onclick="superFiltre()">Filtre</button>
+						</div>
+					</div>	
+					<div class="row">_</div>
+					<div class="row" style="margin-left: -15px; margin-right: -15px">
+				<div class="col-md-7 firstLine">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">Infos</h3>
+						</div>
+						<div id="jetsContent" class="panel-body">
+							<% var indice = 0; %>
+							<% infos.forEach(function(info){ %>
+							<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+								<div class="panel panel-default">
+							    	<div class="panel-heading" role="tab" id="headingInfos<%=indice%>">
+								    	<h4 class="panel-title">
+							        		<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseInfos<%=indice%>" aria-expanded="true" aria-controls="collapse<%=indice%>" class="collapsed titreCategorie">
+								          		<%= info.title %>
+								        	</a>
+								      	</h4>
+								    </div>
+								    <div id="collapseInfos<%=indice%>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInfos<%=indice%>">
+								    	<div class="panel-body">
+								    		<table class="table table-condensed table-striped">
+												<tr>
+												<% info.titles.forEach(function(title){%>
+													<th><%= title %></th>
+												<%});%>
+												</tr>
+												<% info.values.forEach(function(value){%>
+												<tr class="arrayEllement">
+													<% info.titles.forEach(function(title){%>
+													<td><%= value[title.replace(/\s/g, '')] %></td>
+													<% }); %>
+												</tr>
+												<% });%>
+								      		</table>
+								      	</div>
+								    </div>
+								</div>
+							</div>
+								<% indice+=1 %>
+							<% }); %>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-5 firstLine">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">Bestiaire</h3>
+						</div>
+						<div id="jetsContent" class="panel-body">
+							<% var indice = 0; %>
+							<% infos.forEach(function(info){ %>
+							<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+								<div class="panel panel-default">
+							    	<div class="panel-heading" role="tab" id="heading<%=indice%>">
+								    	<h4 class="panel-title">
+							        		<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseInfos<%=indice%>" aria-expanded="true" aria-controls="collapse<%=indice%>" class="collapsed titreCategorie">
+								          		<%= info.title %>
+								        	</a>
+								      	</h4>
+								    </div>
+								    <div id="collapse<%=indice%>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<%=indice%>">
+								    	<div class="panel-body">
+
+								      	</div>
+								    </div>
+								</div>
+							</div>
+								<% indice+=1 %>
+							<% }); %>
+						</div>
+					</div>
+				</div>
+					</div>
+
+				</div>
+			</div>
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3>Mouhahaha</h3>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-5">
+							tata
+						</div>
+						<div class="col-md-7">
+							toto
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+
+
+
+
+	</div>
+</div>
+<script type="text/javascript">
+	var jets = new Jets({
+		searchTag: '#infosSearch',
+		contentTag: '#jetsContent'
+	});
+
+	$("#infosSearch").change(function(){
+		if($(this).val().length==0){
+			$(".arrayEllement").show();
+		}
+	})
+
+
+	function superFiltre(){
+			$(".arrayEllement:not(:contains('"+$("#infosSearch").val()+"'))").hide();
+			$(".arrayEllement:contains('"+$("#infosSearch").val()+"')").show();
+	}
+
+</script>
+<% include ../static/foot.ejs %>
+

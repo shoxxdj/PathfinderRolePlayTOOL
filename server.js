@@ -49,9 +49,9 @@ app.use(cookieParser());
 //random
 var random = require('node-random');
 
-function launchD6(quantity){
+function launchD(quantity,min,max){
   return new Promise(function(resolve,reject){
-    random.integers({"number":quantity,"minimum":1,"maximum":6},function(error,data){
+    random.integers({"number":quantity,"minimum":min,"maximum":max},function(error,data){
       if(error){
         reject(error);
       }
@@ -61,8 +61,6 @@ function launchD6(quantity){
     });
   });
 }
-
-
 
 function getNextUserID(callback){
   async.series([
@@ -197,7 +195,14 @@ app.get('/profil',isAuthenticated,function(req,res){
   }).catch((err)=>{console.log(err);res.end('Error')});
 });
 
-
+function take3Best(arr){
+  return new Promise(function(resolve,reject){
+    resolve(arr.splice(arr.indexOf(Math.min.apply(Math,arr)),1));
+    if("a"==="b"){
+      reject("Oups");
+    }
+  });
+}
 
 
 app.get('/new/character',isAuthenticated,function(req,res){
@@ -205,8 +210,30 @@ app.get('/new/character',isAuthenticated,function(req,res){
 });
 
 app.get('/new/character/caracs',function(req,res){
-  launchD6(6).then((result)=>{
-    console.log(result);
+  launchD(4,1,6).then((result)=>{
+    take3Best(result).then((res1)=>{
+      launchD(4,1,6).then((result)=>{
+        take3Best(result).then((res2)=>{
+          launchD(4,1,6).then((result)=>{
+            take3Best(result).then((res3)=>{
+              launchD(4,1,6).then((result)=>{
+                take3Best(result).then((res4)=>{
+                  launchD(4,1,6).then((result)=>{
+                    take3Best(result).then((res5)=>{
+                      launchD(4,1,6).then((result)=>{
+                        take3Best(result).then((res6)=>{
+                          res.json(res1,res2,res3,res4,res5,res6);
+                        });
+                      });
+                    });
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+    });
   }).catch((err)=>{console.log(err)});
 });
 
@@ -232,6 +259,24 @@ app.get('/help/:where/:what/:precise',function(req,res){
   
   
 });
+
+const ejsLint = require('ejs-lint');
+
+
+app.get('/mj',function(req,res){
+  res.render('mj/index.ejs');
+});
+
+app.get('/mj/newstory',function(req,res){
+  res.render('mj/newStory.ejs');
+  //ejsLint.lint('/mj/newStory.ejs');
+
+});
+
+
+
+
+
 
 
 //a game is started ! 

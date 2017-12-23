@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+<script type="text/javascript">
+	a = {type:'infos',title:"Classe d'armure des objets",titles:["taille","ca"],values:[
+		{taille:'Mouche',ca:'11'},
+		{taille:'Crapaud',ca:'7'},
+		{taille:'Poulet',ca:'5'},
+		{taille:'Gobelin',ca:'4'},
+		{taille:'Humain',ca:'3'},
+		{taille:'Ogre ou cheval',ca:'2'},
+		{taille:'Eléphant',ca:'1'},
+		{taille:'Maison',ca:'-1'}
+	]};
+</script>
+
+<p id="t"></p>
+
+</body>
+
+
+<script type="text/javascript">
+	
+	toPrint = a.title; 
+
+	for(i in a.titles){
+		console.log(a.titles[i]);
+	}
+
+	for(j in a.values){
+		for(i in a.titles){
+			console.log(a.titles[i]+"->"+a.values[j][a.titles[i].replace(/\s/g, '')]);
+		}
+	}
+
+
+
+
+</script>
+
+
+</html>
